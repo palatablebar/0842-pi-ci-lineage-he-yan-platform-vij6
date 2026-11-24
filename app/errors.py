@@ -18,6 +18,11 @@ MESSAGES = {
     "GATE_BLOCKED": "存在阻断项，不能签发",
     "NOT_APPROVED": "批次尚未签发",
     "BAD_REQUEST": "请求内容不完整",
+    "MASS_MISMATCH": "投入量不等于产出加损耗",
+    "PARENT_INPUT_MISMATCH": "父批次贡献之和与投入量不一致",
+    "BAD_PARENT_EDGE": "父批次投料格式不合法",
+    "RECALL_NOT_FOUND": "召回事件不存在",
+    "EVENT_CONFLICT": "事件编号已被其他召回占用",
 }
 
 

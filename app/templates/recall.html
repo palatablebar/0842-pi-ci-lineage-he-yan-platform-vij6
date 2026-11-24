@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>召回停发登记台 · 批次血缘核验台</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='theme.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='layout.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='recall.css') }}">
+</head>
+<body class="p0842 layout-terminal">
+<div class="shell">
+  <nav class="rail" aria-label="阶段导航">
+    <a class="brand" href="/" aria-label="返回血缘核验台">血缘</a>
+    <p class="rail-label">召回登记</p>
+    <div class="rail-links">
+      <a href="/">批次核验台</a>
+      <a href="/recall" aria-current="page">召回停发登记台</a>
+    </div>
+    <p class="rail-note">0842 · 增量登记</p>
+  </nav>
+  <div class="work">
+    <header class="toolbar">
+      <div>
+        <p class="actor">农产品溯源专员</p>
+        <h1>召回停发登记台</h1>
+      </div>
+      <div class="tools">
+        <span class="rule-chip">每份记录各查各的 · 晚到即重算</span>
+      </div>
+    </header>
+    <main>
+      <section class="kpis" aria-label="关键指标">
+        <div class="metric"><span class="metric-label" id="m-lots">登记批次</span><strong id="k-lots">0</strong></div>
+        <div class="metric"><span class="metric-label" id="m-holds">当前停发</span><strong id="k-holds">0</strong></div>
+        <div class="metric"><span class="metric-label" id="m-pending">待核批次/事项</span><strong id="k-pending">0</strong></div>
+        <div class="metric"><span class="metric-label" id="m-recalls">生效召回</span><strong id="k-recalls">0</strong></div>
+      </section>
+
+      <section class="board recall-board">
+        <article class="panel" id="panel-lot">
+          <div class="panel-head"><h2>登记批次/合批记录</h2><span class="hint">每条记录独立提交</span></div>
+          <form id="lot-form" class="entry-form">
+            <label>批次编号 <input name="lot_id" required placeholder="如 L6"></label>
+            <label>父批次投料 <input name="parent_lot" placeholder="如 L4:200;L5:40，单父可只填编号"></label>
+            <label>投入 <input name="qty_in" type="number" min="0" required value="100"></label>
+            <label>产出 <input name="qty_out" type="number" min="0" required value="100"></label>
+            <label>损耗 <input name="loss_qty" type="number" min="0" value="0"></label>
+            <button type="submit">登记并重算</button>
+          </form>
+        </article>
+
+        <article class="panel" id="panel-recall">
+          <div class="panel-head"><h2>登记召回 / 解除</h2><span class="hint">重试登记幂等</span></div>
+          <form id="recall-form" class="entry-form">
+            <label>召回编号 <input name="recall_id" required placeholder="如 R1"></label>
+            <label>问题来料批次 <input name="problem_lot" required placeholder="如 L5"></label>
+            <label>事件编号（可选） <input name="event_id" placeholder="留空则按召回编号生成"></label>
+            <label class="wide">说明 <input name="reason" placeholder="召回原因"></label>
+            <button type="submit">登记召回</button>
+          </form>
+        </article>
+
+        <article class="panel" id="panel-holds">
+          <div class="panel-head"><h2>当前停发名单</h2><span class="hint" id="hold-count">--</span></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>批次</th><th>召回</th><th>状态</th><th>原因码</th><th>待核/停发原因</th></tr></thead>
+              <tbody id="hold-body"></tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="panel" id="panel-pending">
+          <div class="panel-head"><h2>待核事项</h2><span class="hint" id="pending-count">--</span></div>
+          <ul class="issues" id="pending-body"></ul>
+        </article>
+
+        <article class="panel wide-panel" id="panel-lots">
+          <div class="panel-head"><h2>批次出货状态</h2><span class="hint">含每个批次的停发依据</span></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>批次</th><th>版本</th><th>父批次投料</th><th>投入/产出</th><th>出货状态</th><th>约束召回</th></tr></thead>
+              <tbody id="lot-body"></tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="panel" id="panel-recalls">
+          <div class="panel-head"><h2>召回事件</h2><span class="hint">解除仅释放对应停发</span></div>
+          <ul class="issues" id="recall-body"></ul>
+        </article>
+      </section>
+    </main>
+    <footer class="statusbar">
+      <span id="notice" class="notice"></span>
+      <span id="updated-at">未登记</span>
+      <span>0842 · 召回停发</span>
+    </footer>
+  </div>
+</div>
+<script src="{{ url_for('static', filename='recall.js') }}"></script>
+</body>
+</html>

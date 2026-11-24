@@ -4,6 +4,7 @@ services:
     ports: ["127.0.0.1:${PORT:-18526}:8000"]
     environment:
       WORKBENCH_DB: /data/workbench.sqlite3
+      RECALL_DB: /data/recall.sqlite3
     volumes:
       - history:/data
     healthcheck:

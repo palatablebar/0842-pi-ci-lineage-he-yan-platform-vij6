@@ -25,3 +25,7 @@ docker compose config --quiet
 4. 下载证据 JSON，核对来源摘要、指标和签发版本。
 
 业务规则见 `docs/BUSINESS-RULES.md`，字段定义见 `docs/DATA-DICTIONARY.md`。
+
+## 召回停发登记台
+
+打开 `http://127.0.0.1:${PORT:-18520}/recall`。逐条登记批次/合批记录与召回事件，晚到记录自动重算停发名单；缺父批次先停发待核，补齐后按实际来料重算；同批次受多起召回时解除一起不会恢复出货。规则与原因码见 `docs/RECALL.md`。
